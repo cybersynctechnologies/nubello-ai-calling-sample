@@ -53,6 +53,15 @@ td.new{color:var(--ok);font-weight:600}
 .price{display:flex;flex-wrap:wrap;gap:12px}
 .price .box{flex:1 1 220px}
 .big{font-size:26px;font-weight:700;color:var(--brand)}
+button.call{display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s,transform .1s}
+button.call:active{transform:scale(.98)}
+button.call svg{width:20px;height:20px;flex:none}
+.spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:rot .8s linear infinite;flex:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+.orb.connecting{animation:breathe 1.2s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(.92);opacity:.75}}
+.status.err{color:#b42318}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px;vertical-align:middle}
 footer{padding:28px 0 40px;color:var(--muted);font-size:13.5px;text-align:center}
 @media (max-width:640px){.grid{grid-template-columns:1fr}.voices{grid-template-columns:1fr}header img{height:28px}}
 </style>
@@ -72,7 +81,7 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:13.5px;text-align:center
       <label><input type="radio" name="voice" value="90ipbRoKi4CpHXvKVtl0"><span>Voice 3<small>Customer care</small></span></label>
     </div>
     <div class="orb" id="orb" aria-hidden="true"></div>
-    <button class="call" id="callBtn">📞 Start call</button>
+    <button class="call" id="callBtn"></button>
     <div class="status" id="status">Ready when you are.</div>
     <div class="limit">
       <b>Sample limit:</b> this sample includes about <b>10 minutes of talk time in total</b>, shared across all test calls. Each call ends automatically after <b>4 minutes</b>. Every minute you talk uses up the sample balance; once it runs out, the sample stops working.
@@ -133,19 +142,28 @@ const MAX_SECONDS = 240;
 const btn = document.getElementById('callBtn'), statusEl = document.getElementById('status'), orb = document.getElementById('orb');
 let conv = null, timer = null, started = 0, tick = null;
 
-function setStatus(t){ statusEl.textContent = t; }
+const ICON_CALL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>';
+const ICON_END = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="transform:rotate(135deg)"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>';
+function setBtn(state){
+  if (state === 'idle'){ btn.innerHTML = ICON_CALL + '<span>Start call</span>'; btn.classList.remove('end'); btn.disabled = false; }
+  if (state === 'connecting'){ btn.innerHTML = '<span class="spin"></span><span>Connecting…</span>'; btn.disabled = true; }
+  if (state === 'live'){ btn.innerHTML = ICON_END + '<span>End call</span>'; btn.classList.add('end'); btn.disabled = false; }
+}
+setBtn('idle');
+function setStatus(t, err){ statusEl.classList.toggle('err', !!err); statusEl.innerHTML = t; }
 function fmt(s){ return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); }
 
-function resetUI(msg){
+function resetUI(msg, isErr){
   clearTimeout(timer); clearInterval(tick); conv = null;
-  btn.disabled = false; btn.classList.remove('end'); btn.textContent = '📞 Start call';
-  orb.classList.remove('live','speaking');
+  setBtn('idle');
+  orb.classList.remove('live','speaking','connecting');
   document.querySelectorAll('input[name=voice]').forEach(i => i.disabled = false);
-  setStatus(msg || 'Call ended. You can start another one.');
+  setStatus(msg || 'Call ended. You can start another one.', isErr);
 }
 
 async function startCall(){
-  btn.disabled = true; setStatus('Connecting… please allow the microphone.');
+  started = 0; setBtn('connecting'); orb.classList.add('connecting');
+  setStatus('Connecting to Riya… please allow the microphone if asked.');
   try {
     await navigator.mediaDevices.getUserMedia({ audio: true });
     const voiceId = document.querySelector('input[name=voice]:checked').value;
@@ -155,19 +173,25 @@ async function startCall(){
       overrides: { tts: { voiceId } },
       onConnect: () => {
         started = Date.now();
-        btn.disabled = false; btn.classList.add('end'); btn.textContent = 'End call';
-        orb.classList.add('live');
+        setBtn('live');
+        orb.classList.remove('connecting'); orb.classList.add('live');
         document.querySelectorAll('input[name=voice]').forEach(i => i.disabled = true);
-        tick = setInterval(() => { const s = Math.round((Date.now()-started)/1000); setStatus('Connected · ' + fmt(s) + ' / ' + fmt(MAX_SECONDS)); }, 1000);
+        setStatus('<span class="dot"></span>Connected · say hello');
+        tick = setInterval(() => { const s = Math.round((Date.now()-started)/1000); setStatus('<span class="dot"></span>Connected · ' + fmt(s) + ' / ' + fmt(MAX_SECONDS)); }, 1000);
         timer = setTimeout(() => endCall('Time limit reached for this call (4 minutes).'), MAX_SECONDS*1000);
       },
-      onDisconnect: () => resetUI(),
-      onError: (e) => { console.error(e); resetUI('Something went wrong. Please try again in a moment.'); },
+      onDisconnect: (d) => {
+        const quick = !started || (Date.now() - started) < 3000;
+        if (d && d.reason === 'error') resetUI('The call could not continue: ' + (d.message || 'connection error') + '. Please try again.', true);
+        else if (quick && d && d.reason === 'agent') resetUI('The call was refused by the server. Please let us know.', true);
+        else resetUI();
+      },
+      onError: (e) => { console.error(e); resetUI('Something went wrong: ' + (e && e.message ? e.message : e) + '. Please try again.', true); },
       onModeChange: ({ mode }) => orb.classList.toggle('speaking', mode === 'speaking')
     });
   } catch (e) {
     console.error(e);
-    resetUI(e && e.name === 'NotAllowedError' ? 'Microphone access is needed to talk to Riya.' : 'Could not connect. The sample balance may be used up, or please try again.');
+    resetUI(e && e.name === 'NotAllowedError' ? 'Microphone access is needed to talk to Riya. Please allow it and try again.' : 'Could not connect. The sample balance may be used up, or please try again.', true);
   }
 }
 
