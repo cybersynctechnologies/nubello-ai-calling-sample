@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Nubello AI Calling – Live Sample</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#4c024d;--brand2:#7a1f7b;--ink:#1d1a24;--muted:#5d5866;--line:#e7e2ee;--soft:#f7f4fa;--ok:#0f8a5f;--bg:#ffffff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px}
+header{border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;gap:12px}
+header img{height:34px;width:auto}
+.x{color:var(--muted);font-size:14px}
+.hero{background:linear-gradient(160deg,#fbf7fd, #f1e7f4);border-bottom:1px solid var(--line)}
+.hero .wrap{padding:40px 16px 36px;text-align:center}
+.tag{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--brand2);font-weight:600;margin-bottom:8px}
+h1{font-size:clamp(26px,5vw,38px);margin:0 0 8px;color:var(--brand);line-height:1.2}
+.sub{color:var(--muted);max-width:620px;margin:0 auto 26px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;max-width:520px;margin:0 auto;box-shadow:0 10px 30px rgba(76,2,77,.08)}
+.voices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.voices label{border:1px solid var(--line);border-radius:12px;padding:10px 6px;cursor:pointer;font-size:13px;line-height:1.3;transition:.15s}
+.voices input{display:none}
+.voices input:checked + span{color:var(--brand);font-weight:600}
+.voices label:has(input:checked){border-color:var(--brand);background:var(--soft)}
+.voices small{display:block;color:var(--muted);font-weight:400;font-size:11.5px}
+.orb{width:116px;height:116px;border-radius:50%;margin:6px auto 16px;background:radial-gradient(circle at 35% 30%,#c98fd0,#7a1f7b 55%,#4c024d);box-shadow:0 0 0 0 rgba(122,31,123,.35);transition:transform .2s}
+.orb.live{animation:pulse 1.6s infinite}
+.orb.speaking{transform:scale(1.08)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(122,31,123,.45)}70%{box-shadow:0 0 0 22px rgba(122,31,123,0)}100%{box-shadow:0 0 0 0 rgba(122,31,123,0)}}
+button.call{width:100%;border:0;border-radius:999px;padding:15px 18px;font:600 16px Poppins,sans-serif;color:#fff;background:var(--brand);cursor:pointer}
+button.call.end{background:#b42318}
+button.call:disabled{opacity:.6;cursor:wait}
+.status{margin-top:12px;font-size:14px;color:var(--muted);min-height:22px}
+.limit{margin-top:14px;font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:10px;padding:10px 12px;text-align:left}
+section{padding:34px 0;border-bottom:1px solid var(--line)}
+h2{font-size:22px;color:var(--brand);margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.box{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}
+.box b{display:block;margin-bottom:4px}
+.box p{margin:0;color:var(--muted);font-size:14px}
+ul.try{margin:0;padding-left:18px;color:var(--muted)}
+ul.try li{margin:4px 0}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--soft);font-weight:600}
+td.new{color:var(--ok);font-weight:600}
+.note{font-size:12.5px;color:var(--muted);margin-top:10px}
+.price{display:flex;flex-wrap:wrap;gap:12px}
+.price .box{flex:1 1 220px}
+.big{font-size:26px;font-weight:700;color:var(--brand)}
+footer{padding:28px 0 40px;color:var(--muted);font-size:13.5px;text-align:center}
+@media (max-width:640px){.grid{grid-template-columns:1fr}.voices{grid-template-columns:1fr}header img{height:28px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><img src="assets/nubello-logo.png" alt="Nubello Aesthetics"><span class="x">×</span><img src="assets/cybersync-logo.png" alt="Cybersync Technologies"></div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="tag">Live sample for Nubello Aesthetics</div>
+  <h1>Talk to Riya, Nubello's AI calling assistant</h1>
+  <p class="sub">This is the upgraded AI calling agent. Press the button, allow the microphone, and talk to her like a patient would, in any Indian language.</p>
+
+  <div class="card">
+    <div class="voices" role="radiogroup" aria-label="Choose a voice">
+      <label><input type="radio" name="voice" value="Ms9OTvWb99V6DwRHZn6q" checked><span>Voice 1<small>Deep &amp; clear</small></span></label>
+      <label><input type="radio" name="voice" value="RABOvaPec1ymXz02oDQi"><span>Voice 2<small>Sweet &amp; lively</small></span></label>
+      <label><input type="radio" name="voice" value="90ipbRoKi4CpHXvKVtl0"><span>Voice 3<small>Customer care</small></span></label>
+    </div>
+    <div class="orb" id="orb" aria-hidden="true"></div>
+    <button class="call" id="callBtn">📞 Start call</button>
+    <div class="status" id="status">Ready when you are.</div>
+    <div class="limit">
+      <b>Sample limit:</b> this sample includes about <b>10 minutes of talk time in total</b>, shared across all test calls. Each call ends automatically after <b>4 minutes</b>. Every minute you talk uses up the sample balance; once it runs out, the sample stops working.
+    </div>
+  </div>
+</div></div>
+
+<main class="wrap">
+<section>
+  <h2>Things to try</h2>
+  <ul class="try">
+    <li>Pick your language: Hindi, English, Marathi, Gujarati, Bengali, Assamese, Odia, Tamil, Telugu, Kannada, Malayalam, Punjabi or Urdu.</li>
+    <li>Say you have hair fall, and ask what could help (PRP, transplant, no-shave options).</li>
+    <li>Ask about pain, recovery time, or whether a hair transplant is permanent.</li>
+    <li>Ask about skin, laser hair removal or weight loss.</li>
+    <li>Book a consultation at Kharghar or Andheri.</li>
+  </ul>
+  <p class="note">Riya explains treatments using Nubello's own website information, suggests options, and then books the consultation. She never quotes prices or gives a diagnosis; the doctor confirms the plan.</p>
+</section>
+
+<section>
+  <h2>What's better than the current calling setup</h2>
+  <div class="grid">
+    <div class="box"><b>Sounds like a real person</b><p>Natural, expressive Indian voices with warmth, empathy and small pauses, instead of a flat robotic tone.</p></div>
+    <div class="box"><b>Speaks 13 Indian languages</b><p>Switches to the caller's language and speaks it casually, the way people actually talk in Mumbai.</p></div>
+    <div class="box"><b>Knows Nubello's treatments</b><p>Answers questions on hair, skin, slimming, laser and cosmetic treatments from Nubello's own information.</p></div>
+    <div class="box"><b>Advises first, then books</b><p>Understands the problem, suggests suitable options, and then books the consultation, so more calls turn into visits.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Running cost per minute</h2>
+  <table>
+    <tr><th></th><th>Current setup</th><th>New setup</th></tr>
+    <tr><td>AI calling cost per minute</td><td>about ₹14</td><td class="new">about ₹5–7.5 (estimated)</td></tr>
+    <tr><td>Saving</td><td>–</td><td class="new">roughly 45–65% lower</td></tr>
+    <tr><td>Phone line charges</td><td>separate</td><td>separate (same as today)</td></tr>
+  </table>
+  <p class="note">The new cost is our estimate based on the calling platform's current published plans and our test calls. Phone line (telephony) charges are billed separately in both cases. The exact numbers will be confirmed from the first weeks of real calls.</p>
+</section>
+
+<section>
+  <h2>The upgrade</h2>
+  <div class="price">
+    <div class="box"><b>Investment</b><div class="big">₹38,000 <small style="font-size:14px;font-weight:500">+ GST</small></div><p>One-time, 100% in advance.</p></div>
+    <div class="box"><b>Timeline</b><div class="big">2–3 weeks</div><p>Live on your Nubello AI system, connected to your current phone line.</p></div>
+  </div>
+  <p class="note">Monthly calling platform and phone line charges are paid by Nubello directly. If Nubello goes ahead with our Monthly Engagement, this upgrade is included in it.</p>
+</section>
+</main>
+
+<footer>Prepared by Cybersync Technologies for Nubello Aesthetics · Point of contact: Biproraj Das</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.28.0/dist/lib.iife.js"></script>
+<script>
+const AGENT_ID = "agent_7901m6p6dgk3eb2t3w5wgycrhhx7";
+const MAX_SECONDS = 240;
+const btn = document.getElementById('callBtn'), statusEl = document.getElementById('status'), orb = document.getElementById('orb');
+let conv = null, timer = null, started = 0, tick = null;
+
+function setStatus(t){ statusEl.textContent = t; }
+function fmt(s){ return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); }
+
+function resetUI(msg){
+  clearTimeout(timer); clearInterval(tick); conv = null;
+  btn.disabled = false; btn.classList.remove('end'); btn.textContent = '📞 Start call';
+  orb.classList.remove('live','speaking');
+  document.querySelectorAll('input[name=voice]').forEach(i => i.disabled = false);
+  setStatus(msg || 'Call ended. You can start another one.');
+}
+
+async function startCall(){
+  btn.disabled = true; setStatus('Connecting… please allow the microphone.');
+  try {
+    await navigator.mediaDevices.getUserMedia({ audio: true });
+    const voiceId = document.querySelector('input[name=voice]:checked').value;
+    conv = await ElevenLabsClient.Conversation.startSession({
+      agentId: AGENT_ID,
+      connectionType: 'webrtc',
+      overrides: { tts: { voiceId } },
+      onConnect: () => {
+        started = Date.now();
+        btn.disabled = false; btn.classList.add('end'); btn.textContent = 'End call';
+        orb.classList.add('live');
+        document.querySelectorAll('input[name=voice]').forEach(i => i.disabled = true);
+        tick = setInterval(() => { const s = Math.round((Date.now()-started)/1000); setStatus('Connected · ' + fmt(s) + ' / ' + fmt(MAX_SECONDS)); }, 1000);
+        timer = setTimeout(() => endCall('Time limit reached for this call (4 minutes).'), MAX_SECONDS*1000);
+      },
+      onDisconnect: () => resetUI(),
+      onError: (e) => { console.error(e); resetUI('Something went wrong. Please try again in a moment.'); },
+      onModeChange: ({ mode }) => orb.classList.toggle('speaking', mode === 'speaking')
+    });
+  } catch (e) {
+    console.error(e);
+    resetUI(e && e.name === 'NotAllowedError' ? 'Microphone access is needed to talk to Riya.' : 'Could not connect. The sample balance may be used up, or please try again.');
+  }
+}
+
+async function endCall(msg){
+  const c = conv; conv = null;
+  try { if (c) await c.endSession(); } catch (e) {}
+  resetUI(msg);
+}
+
+btn.addEventListener('click', () => conv ? endCall() : startCall());
+</script>
+</body>
+</html>
