@@ -169,7 +169,7 @@ async function startCall(){
     const voiceId = document.querySelector('input[name=voice]:checked').value;
     conv = await ElevenLabsClient.Conversation.startSession({
       agentId: AGENT_ID,
-      connectionType: 'webrtc',
+      connectionType: 'websocket',
       overrides: { tts: { voiceId } },
       onConnect: () => {
         started = Date.now();
